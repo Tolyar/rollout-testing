@@ -15,31 +15,30 @@ spec:
     spec:
       terminationGracePeriodSeconds: 300
       volumes:
-      - name: foo
-        configMap:
-          name: democm
+        - name: foo
+          configMap:
+            name: democm
       containers:
-      - name: rollouts-demo
-        image: registry.gitlab.com/wuestkamp/k8s-deployment-example-app:v1
-        imagePullPolicy: Always
-        lifecycle:
-          preStop:
-            exec:
-              command:
-                - '/bin/sleep'
-                - '200'
-        env:
-        - name: DEMO_VAR_1
-          value: "Demo var 1"
-        - name: DEMO_VAR_2
-          value: "Demo var 2"
+        - name: rollouts-demo
+          image: registry.gitlab.com/wuestkamp/k8s-deployment-example-app:v1
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "/bin/sleep"
+                  - "200"
+          env:
+            - name: DEMO_VAR_1
+              value: "Demo var 1"
+            - name: DEMO_VAR_2
+              value: "Demo var 2"
 
   strategy:
     canary:
       steps:
-      - setWeight: 10
-      # Rollouts can be manually resumed by running `kubectl argo rollouts promote ROLLOUT`
-      - pause: {}
-      - setWeight: 50
-      - pause: { duration: 120 } # two minutes
- 
+        - setWeight: 10
+        # Rollouts can be manually resumed by running `kubectl argo rollouts promote ROLLOUT`
+        - pause: {}
+        - setWeight: 50
+        - pause: { duration: 120 } # two minutes
